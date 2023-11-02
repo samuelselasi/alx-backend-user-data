@@ -208,4 +208,6 @@ bob@dylan:~$ PERSONAL_DATA_DB_USERNAME=root PERSONAL_DATA_DB_PASSWORD=root PERSO
 2
 bob@dylan:~$
 ```
+[4. Read and filter data](./filtered_logger.py)
+
 

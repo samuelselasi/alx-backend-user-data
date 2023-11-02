@@ -1,4 +1,5 @@
 # User Data
+![1_V904UI-irF0tW1TyqKuG1Q](https://github.com/samuelselasi/alx-backend-user-data/assets/85158665/08e147ac-4ab7-4661-84f8-12479b4a8dbf)
 
 ## Table of Contents
 * [About](#about)

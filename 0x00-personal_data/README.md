@@ -1,5 +1,6 @@
 # 0x00. Personal data
 #### `Back-end` `Authentification`
+![5c48d4f6d4dd8081eb48](https://github.com/samuelselasi/alx-backend-user-data/assets/85158665/a88ac901-4eff-40ee-a374-84b47149fd6e)
 
 ## Resources
 **Read or watch**:

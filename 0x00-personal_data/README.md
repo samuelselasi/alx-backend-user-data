@@ -264,3 +264,31 @@ bob@dylan:~$ PERSONAL_DATA_DB_USERNAME=root PERSONAL_DATA_DB_PASSWORD=root PERSO
 [HOLBERTON] user_data INFO 2019-11-19 18:37:59,621: name=***; email=***; phone=***; ssn=***; password=***; ip=f724:c5d1:a14d:c4c5:bae2:9457:3769:1969; last_login=2019-11-14 06:16:19; user_agent=Mozilla/5.0 (Linux; U; Android 4.1.2; de-de; GT-I9100 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30;
 bob@dylan:~$
 ```
+
+
+[5. Encrypting passwords](./encrypt_password.py)
+
+User passwords should **NEVER** be stored in plain text in a database.
+
+Implement a `hash_password` function that expects one string argument name `password` and returns a salted, hashed password, which is a byte string.
+
+Use the `bcrypt` package to perform the hashing (with `hashpw`).
+```
+bob@dylan:~$ cat main.py
+#!/usr/bin/env python3
+"""
+Main file
+"""
+
+hash_password = __import__('encrypt_password').hash_password
+
+password = "MyAmazingPassw0rd"
+print(hash_password(password))
+print(hash_password(password))
+
+bob@dylan:~$
+bob@dylan:~$ ./main.py
+b'$2b$12$Fnjf6ew.oPZtVksngJjh1.vYCnxRjPm2yt18kw6AuprMRpmhJVxJO'
+b'$2b$12$xSAw.bxfSTAlIBglPMXeL.SJnzme3Gm0E7eOEKOVV2OhqOakyUN5m'
+bob@dylan:~$
+```

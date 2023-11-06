@@ -19,3 +19,4 @@ This directory consists of:
 
 ## Projects
 0. [0x00-personal_data](./0x00-personal_data)
+1. [0x01-Basic_authentication](./0x01-Basic_authentication)

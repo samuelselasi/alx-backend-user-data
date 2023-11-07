@@ -431,3 +431,39 @@ Holberton School
 Holberton School
 bob@dylan:~$
 ```
+
+
+[9. Basic - User credentials](./api/v1/auth/basic_auth.py)
+
+Add the method `def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str)` in the class `BasicAuth` that returns the `user email` and `password` from the `Base64` decoded value.
+
+* This method must return `2` values
+* Return `None`, `None` if `decoded_base64_authorization_header` is `None`
+* Return `None`, `None` if `decoded_base64_authorization_header` is not a string
+* Return `None`, `None` if `decoded_base64_authorization_header` doesn’t contain `:`
+* Otherwise, return the `user email` and the `user password` - these `2` values must be separated by a `:`
+* You can assume `decoded_base64_authorization_header` will contain only one `:`
+```
+bob@dylan:~$ cat main_4.py
+#!/usr/bin/env python3
+""" Main 4
+"""
+from api.v1.auth.basic_auth import BasicAuth
+
+a = BasicAuth()
+
+print(a.extract_user_credentials(None))
+print(a.extract_user_credentials(89))
+print(a.extract_user_credentials("Holberton School"))
+print(a.extract_user_credentials("Holberton:School"))
+print(a.extract_user_credentials("bob@gmail.com:toto1234"))
+
+bob@dylan:~$
+bob@dylan:~$ API_HOST=0.0.0.0 API_PORT=5000 ./main_4.py
+(None, None)
+(None, None)
+(None, None)
+('Holberton', 'School')
+('bob@gmail.com', 'toto1234')
+bob@dylan:~$
+```

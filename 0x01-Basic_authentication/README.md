@@ -258,3 +258,59 @@ True
 True
 bob@dylan:~$
 ```
+
+[5. Request validation!](./api/v1/app.py), [auth](./api/v1/auth/auth.py)
+
+Now you will validate all requests to secure the API:
+
+Update the method `def authorization_header(self, request=None) -> str:` in `api/v1/auth/auth.py`:
+
+* If `request` is `None`, returns `None`
+* If `request` doesn’t contain the header key `Authorization`, returns None
+* Otherwise, return the value of the header request `Authorization`
+
+Update the file `api/v1/app.py`:
+
+* Create a variable `auth` initialized to `None` after the `CORS` definition
+* Based on the environment variable `AUTH_TYPE`, load and assign the right instance of authentication to `auth`
+	* if `auth`:
+		* import `Auth` from `api.v1.auth.auth`
+		* create an instance of `Auth` and assign it to the variable `auth`
+
+Now the biggest piece is the filtering of each request. For that you will use the Flask method [before_request](https://flask.palletsprojects.com/en/1.1.x/api/#flask.Blueprint.before_request)
+
+* Add a method in `api/v1/app.py` to `handler before_request`
+	* if `auth` is `None`, do nothing
+	* if `request.path` is not part of this list `['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']`, do nothing - you must use the method `require_auth` from the `auth` instance
+	* if `auth.authorization_header(request)` returns `None`, raise the error `401` - you must use `abort`
+	* if `auth.current_user(request)` returns `None`, raise the error `403` - you must use `abort`
+
+**In the first terminal**:
+```
+bob@dylan:~$ API_HOST=0.0.0.0 API_PORT=5000 AUTH_TYPE=auth python3 -m api.v1.app
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+....
+```
+**In a second terminal**:
+```
+bob@dylan:~$ curl "http://0.0.0.0:5000/api/v1/status"
+{
+  "status": "OK"
+}
+bob@dylan:~$ 
+bob@dylan:~$ curl "http://0.0.0.0:5000/api/v1/status/"
+{
+  "status": "OK"
+}
+bob@dylan:~$ 
+bob@dylan:~$ curl "http://0.0.0.0:5000/api/v1/users"
+{
+  "error": "Unauthorized"
+}
+bob@dylan:~$
+bob@dylan:~$ curl "http://0.0.0.0:5000/api/v1/users" -H "Authorization: Test"
+{
+  "error": "Forbidden"
+}
+bob@dylan:~$
+```

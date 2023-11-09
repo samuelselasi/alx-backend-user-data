@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 """Module to handle expiration for Session authentication"""
 from datetime import datetime, timedelta
@@ -13,7 +14,7 @@ class SessionExpAuth(SessionAuth):
 
         dur = os.getenv('SESSION_DURATION')
 
-        if dur is not None or not dur.isnumeric():
+        if dur is not None and dur.isnumeric():
             self.session_duration = int(dur)
         else:
             self.session_duration = 0
@@ -45,11 +46,6 @@ class SessionExpAuth(SessionAuth):
 
         if self.session_duration <= 0:
             return user_session.get('user_id')
-
-        extime = user_session.get('created_at')
-
-        if extime is None:
-            return None
 
         expiration_time = user_session.get(
                 'created_at') + timedelta(seconds=self.session_duration)

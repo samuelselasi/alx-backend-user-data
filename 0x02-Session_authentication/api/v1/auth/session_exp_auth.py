@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """Module to handle expiration for Session authentication"""
 from datetime import datetime, timedelta

@@ -12,7 +12,11 @@ class SessionExpAuth(SessionAuth):
         """Method to dinitialise attributes to handle session expiration"""
 
         dur = os.getenv('SESSION_DURATION')
-        self.session_duration = int(dur) if dur and dur.isnumeric() else 0
+
+        if dur is not None and dur.isnumeric():
+            self.session_duration = int(dur)
+        else:
+            self.session_duration = 0
 
     def create_session(self, user_id: str = None) -> str:
         """Method that creates a Session ID for a user"""
@@ -42,14 +46,10 @@ class SessionExpAuth(SessionAuth):
         if self.session_duration <= 0:
             return user_session.get('user_id')
 
-        created_at = user_session.get('created_at')
+        expiration_time = user_session.get(
+                'created_at') + timedelta(seconds=self.session_duration)
 
-        if created_at is None:
-            return None
-
-        time = self.session_duration
-
-        if (created_at + timedelta(time)) < datetime.now():
+        if expiration_time < datetime.now():
             return None
 
         return user_session.get('user_id')

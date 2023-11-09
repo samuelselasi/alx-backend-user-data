@@ -1,5 +1,6 @@
 # 0x02. Session authentication
 #### `Back-end` `Authentification`
+![6ccb363443a8f301bc2bc38d7a08e9650117de7c](https://github.com/samuelselasi/alx-backend-user-data/assets/85158665/97505d2b-4a5f-4016-b123-9a093e6f638a)
 
 ## Background Context
 In this project, you will implement a **Session Authentication**. You are not allowed to install any other module.

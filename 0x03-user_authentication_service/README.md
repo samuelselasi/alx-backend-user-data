@@ -297,3 +297,18 @@ could not create a new user: User me@me.com already exists
 bob@dylan:~$
 ```
 
+
+[6. Basic Flask app](./app.py)
+
+In this task, you will set up a basic `Flask` app.
+
+Create a `Flask` app that has a single `GET `route (`"/"`) and use `flask.jsonify` to return a JSON payload of the form:
+```
+{"message": "Bienvenue"}
+```
+Add the following code at the end of the module:
+```
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="5000")
+```
+

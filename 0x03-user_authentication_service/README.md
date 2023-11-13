@@ -133,3 +133,53 @@ bob@dylan:~$ python3 main.py
 bob@dylan:~$
 ```
 
+[2. Find user](./db.py)
+
+In this task you will implement the `DB.find_user_by` method. This method takes in arbitrary keyword arguments and returns the first row found in the `users` table as filtered by the method’s input arguments. No validation of input arguments required at this point.
+
+Make sure that SQLAlchemy’s `NoResultFound` and `InvalidRequestError` are raised when no results are found, or when wrong query arguments are passed, respectively.
+
+**Warning**:
+
+* `NoResultFound` has been moved from `sqlalchemy.orm.exc` to `sqlalchemy.exc` between the version `1.3.x` and `1.4.x` of SQLAchemy - please make sure you are importing it from `sqlalchemy.orm.exc`
+```
+bob@dylan:~$ cat main.py
+#!/usr/bin/env python3
+"""
+Main file
+"""
+from db import DB
+from user import User
+
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
+
+
+my_db = DB()
+
+user = my_db.add_user("test@test.com", "PwdHashed")
+print(user.id)
+
+find_user = my_db.find_user_by(email="test@test.com")
+print(find_user.id)
+
+try:
+    find_user = my_db.find_user_by(email="test2@test.com")
+    print(find_user.id)
+except NoResultFound:
+    print("Not found")
+
+try:
+    find_user = my_db.find_user_by(no_email="test@test.com")
+    print(find_user.id)
+except InvalidRequestError:
+    print("Invalid")        
+
+bob@dylan:~$ python3 main.py
+1
+1
+Not found
+Invalid
+bob@dylan:~$
+```
+

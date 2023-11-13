@@ -183,3 +183,44 @@ Invalid
 bob@dylan:~$
 ```
 
+
+[3. update user](./db.py)
+
+In this task, you will implement the `DB.update_user` method that takes as argument a required `user_id` integer and arbitrary keyword arguments, and returns `None`.
+
+The method will use `find_user_by` to locate the `user` to `update`, then will `update` the user’s attributes as passed in the method’s arguments then commit changes to the database.
+
+If an argument that does not correspond to a user attribute is passed, raise a `ValueError`.
+```
+bob@dylan:~$ cat main.py
+#!/usr/bin/env python3
+"""
+Main file
+"""
+from db import DB
+from user import User
+
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
+
+
+my_db = DB()
+
+email = 'test@test.com'
+hashed_password = "hashedPwd"
+
+user = my_db.add_user(email, hashed_password)
+print(user.id)
+
+try:
+    my_db.update_user(user.id, hashed_password='NewPwd')
+    print("Password updated")
+except ValueError:
+    print("Error")
+
+bob@dylan:~$ python3 main.py
+1
+Password updated
+bob@dylan:~$
+```
+

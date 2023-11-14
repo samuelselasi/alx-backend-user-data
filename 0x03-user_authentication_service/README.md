@@ -562,3 +562,67 @@ The request is expected to contain the session ID as a `cookie` with key `"sessi
 Find the `user` with the requested session ID. If the `user` exists destroy the session and redirect the `user` to `GET /`. If the `user` does not exist, respond with a `403` HTTP status.
 
 
+[15. User profile](./app.py)
+
+In this task, you will implement a `profile` function to respond to the `GET /profile` route.
+
+The request is expected to contain a `session_id` cookie. Use it to find the `user`. If the `user` exist, respond with a `200` HTTP status and the following JSON payload:
+```
+{"email": "<user email>"}
+```
+If the session ID is invalid or the `user` does not exist, respond with a `403` HTTP status.
+```
+bob@dylan:~$ curl -XPOST localhost:5000/sessions -d 'email=bob@bob.com' -d 'password=mySuperPwd' -v
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 5000 (#0)
+> POST /sessions HTTP/1.1
+> Host: localhost:5000
+> User-Agent: curl/7.58.0
+> Accept: */*
+> Content-Length: 37
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 37 out of 37 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Content-Type: application/json
+< Content-Length: 46
+< Set-Cookie: session_id=75c89af8-1729-44d9-a592-41b5e59de9a1; Path=/
+< Server: Werkzeug/1.0.1 Python/3.7.3
+< Date: Wed, 19 Aug 2020 00:15:57 GMT
+< 
+{"email":"bob@bob.com","message":"logged in"}
+* Closing connection 0
+bob@dylan:~$
+bob@dylan:~$ curl -XGET localhost:5000/profile -b "session_id=75c89af8-1729-44d9-a592-41b5e59de9a1"
+{"email": "bob@bob.com"}
+bob@dylan:~$ 
+bob@dylan:~$ curl -XGET localhost:5000/profile -b "session_id=nope" -v
+Note: Unnecessary use of -X or --request, GET is already inferred.
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 5000 (#0)
+> GET /profile HTTP/1.1
+> Host: localhost:5000
+> User-Agent: curl/7.58.0
+> Accept: */*
+> Cookie: session_id=75c89af8-1729-44d9-a592-41b5e59de9a
+> 
+* HTTP 1.0, assume close after body
+< HTTP/1.0 403 FORBIDDEN
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 234
+< Server: Werkzeug/1.0.1 Python/3.7.3
+< Date: Wed, 19 Aug 2020 00:16:43 GMT
+< 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<title>403 Forbidden</title>
+<h1>Forbidden</h1>
+<p>You don't have the permission to access the requested resource. It is either read-protected or not readable by the server.</p>
+* Closing connection 0
+
+bob@dylan:~$
+```
+

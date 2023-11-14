@@ -53,11 +53,15 @@ def logout():
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
 
-    if session_id is None or user is None:
-        abort(403)
+    if user:
+        AUTH.destroy_session(user.id)
 
-    AUTH.destroy_session(user.id)
-    return redirect('/')
+        res = jsonify({'message': 'logout successful'})
+
+        res.delete_cookie('session_id')
+        return redirect('/', code=302)
+    else:
+        abort(403)
 
 
 if __name__ == "__main__":

@@ -434,3 +434,34 @@ In this task you will implement a `_generate_uuid` function in the `auth` module
 
 Note that the method is private to the `auth` module and should **NOT** be used outside of it.
 
+
+[10. Get session ID](./auth.py)
+
+In this task, you will implement the `Auth.create_session` method. It takes an `email` string argument and returns the session ID as a string.
+
+The method should find the `user` corresponding to the `email`, generate a new UUID and store it in the database as the user’s `session_id`, then return the session ID.
+
+Remember that only public methods of `self._db` can be used.
+```
+bob@dylan:~$ cat main.py
+#!/usr/bin/env python3
+"""
+Main file
+"""
+from auth import Auth
+
+email = 'bob@bob.com'
+password = 'MyPwdOfBob'
+auth = Auth()
+
+auth.register_user(email, password)
+
+print(auth.create_session(email))
+print(auth.create_session("unknown@email.com"))
+
+bob@dylan:~$ python3 main.py
+5a006849-343e-4a48-ba4e-bbd523fcca58
+None
+bob@dylan:~$
+```
+

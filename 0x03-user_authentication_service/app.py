@@ -53,12 +53,12 @@ def logout():
     session_id = request.cookies.get('session_id')
 
     if session_id is None:
-        abort(403)
+        return jsonify({"error": "Session ID not found"}), 403
 
     user = AUTH.get_user_from_session_id(session_id)
 
     if user is None:
-        abort(403)
+        return jsonify({"error": "User not found"}), 403
 
     AUTH.destroy_session(user.id)
     return redirect('/')

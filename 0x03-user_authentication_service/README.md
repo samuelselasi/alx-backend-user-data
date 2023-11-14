@@ -312,3 +312,86 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
 ```
 
+
+[7. Register user](./app.py)
+
+In this task, you will implement the end-point to register a `user`. Define a `users` function that implements the `POST /users` route.
+
+Import the `Auth` object and instantiate it at the root of the module as such:
+```
+from auth import Auth
+
+
+AUTH = Auth()
+```
+The end-point should expect two form data fields: `"email"` and `"password"`. If the `user` does not exist, the end-point should register it and respond with the following JSON payload:
+```
+{"email": "<registered email>", "message": "user created"}
+```
+If the `user` is already registered, catch the exception and return a JSON payload of the form
+```
+{"message": "email already registered"}
+```
+and return a `400` status code
+
+Remember that you should only use `AUTH` in this app. `DB` is a lower abstraction that is proxied by `Auth`.
+
+**Terminal 1**:
+```
+bob@dylan:~$ python3 app.py 
+* Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+```
+**Terminal 2**:
+```
+bob@dylan:~$ curl -XPOST localhost:5000/users -d 'email=bob@me.com' -d 'password=mySuperPwd' -v
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 5000 (#0)
+> POST /users HTTP/1.1
+> Host: localhost:5000
+> User-Agent: curl/7.58.0
+> Accept: */*
+> Content-Length: 40
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 40 out of 40 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Content-Type: application/json
+< Content-Length: 52
+< Server: Werkzeug/1.0.1 Python/3.7.3
+< Date: Wed, 19 Aug 2020 00:03:18 GMT
+< 
+{"email":"bob@me.com","message":"user created"}
+
+bob@dylan:~$
+bob@dylan:~$ curl -XPOST localhost:5000/users -d 'email=bob@me.com' -d 'password=mySuperPwd' -v
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 5000 (#0)
+> POST /users HTTP/1.1
+> Host: localhost:5000
+> User-Agent: curl/7.58.0
+> Accept: */*
+> Content-Length: 40
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 40 out of 40 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 400 BAD REQUEST
+< Content-Type: application/json
+< Content-Length: 39
+< Server: Werkzeug/1.0.1 Python/3.7.3
+< Date: Wed, 19 Aug 2020 00:03:33 GMT
+< 
+{"message":"email already registered"}
+bob@dylan:~$
+```
+

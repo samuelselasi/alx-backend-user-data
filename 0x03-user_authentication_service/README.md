@@ -427,3 +427,10 @@ False
 bob@dylan:~$
 ```
 
+
+[9. Generate UUIDs](./auth.py)
+
+In this task you will implement a `_generate_uuid` function in the `auth` module. The function should return a string representation of a new `UUID`. Use the `uuid` module.
+
+Note that the method is private to the `auth` module and should **NOT** be used outside of it.
+

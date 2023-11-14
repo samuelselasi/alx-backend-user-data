@@ -51,9 +51,13 @@ def logout():
     """Endpoint to logout a user with session id from cookies"""
 
     session_id = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(session_id)
 
     if session_id is None:
+        abort(403)
+
+    user = AUTH.get_user_from_session_id(session_id)
+
+    if user is None:
         abort(403)
 
     AUTH.destroy_session(user.id)

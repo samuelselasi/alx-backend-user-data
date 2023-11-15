@@ -626,3 +626,11 @@ Note: Unnecessary use of -X or --request, GET is already inferred.
 bob@dylan:~$
 ```
 
+
+[16. Generate reset password token](./auth.py)
+
+In this task, you will implement the `Auth.get_reset_password_token` method. It take an `email` string argument and returns a string.
+
+Find the `user` corresponding to the `email`. If the `user` does not exist, raise a `ValueError` exception. If it exists, generate a UUID and update the user’s `reset_token` database field. Return the `token`.
+
+
